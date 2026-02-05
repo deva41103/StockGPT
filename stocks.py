@@ -1,0 +1,97 @@
+# stocks.py
+# Complete NIFTY 50 stock mapping for NLP-based extraction
+
+NIFTY_STOCKS = {
+    # IT
+    "INFY": "INFY.NS",
+    "INFOSYS": "INFY.NS",
+    "TCS": "TCS.NS",
+    "WIPRO": "WIPRO.NS",
+    "HCL": "HCLTECH.NS",
+    "HCLTECH": "HCLTECH.NS",
+    "TECHM": "TECHM.NS",
+    "TECH": "TECHM.NS",
+
+    # Banking & Finance
+    "HDFC": "HDFCBANK.NS",
+    "HDFCBANK": "HDFCBANK.NS",
+    "ICICI": "ICICIBANK.NS",
+    "ICICIBANK": "ICICIBANK.NS",
+    "SBIN": "SBIN.NS",
+    "SBI": "SBIN.NS",
+    "AXIS": "AXISBANK.NS",
+    "AXISBANK": "AXISBANK.NS",
+    "KOTAK": "KOTAKBANK.NS",
+    "KOTAKBANK": "KOTAKBANK.NS",
+    "INDUSIND": "INDUSINDBK.NS",
+    "INDUSINDBANK": "INDUSINDBK.NS",
+    "BAJAJFINSERV": "BAJAJFINSV.NS",
+    "BAJAJFINANCE": "BAJFINANCE.NS",
+    "BAJFINANCE": "BAJFINANCE.NS",
+    "BAJAJ": "BAJFINANCE.NS",
+
+    # Energy & Power
+    "RELIANCE": "RELIANCE.NS",
+    "ONGC": "ONGC.NS",
+    "NTPC": "NTPC.NS",
+    "POWERGRID": "POWERGRID.NS",
+    "BPCL": "BPCL.NS",
+
+    # FMCG
+    "HUL": "HINDUNILVR.NS",
+    "HINDUNILVER": "HINDUNILVR.NS",
+    "ITC": "ITC.NS",
+    "NESTLE": "NESTLEIND.NS",
+    "NESTLEIND": "NESTLEIND.NS",
+
+    # Metals
+    "TATASTEEL": "TATASTEEL.NS",
+    "TATA": "TATASTEEL.NS",
+    "JSW": "JSWSTEEL.NS",
+    "JSWSTEEL": "JSWSTEEL.NS",
+    "HINDALCO": "HINDALCO.NS",
+
+    # Automobiles
+    "MARUTI": "MARUTI.NS",
+    "TATAMOTORS": "TATAMOTORS.NS",
+    "M&M": "M&M.NS",
+    "MAHINDRA": "M&M.NS",
+    "BAJAJAUTO": "BAJAJ-AUTO.NS",
+    "BAJAJ-AUTO": "BAJAJ-AUTO.NS",
+    "EICHER": "EICHERMOT.NS",
+    "EICHERMOT": "EICHERMOT.NS",
+    "HEROMOTO": "HEROMOTOCO.NS",
+    "HEROMOTOCO": "HEROMOTOCO.NS",
+
+    # Pharma & Healthcare
+    "SUN": "SUNPHARMA.NS",
+    "SUNPHARMA": "SUNPHARMA.NS",
+    "DRREDDY": "DRREDDY.NS",
+    "DRREDDYS": "DRREDDY.NS",
+    "CIPLA": "CIPLA.NS",
+    "DIVIS": "DIVISLAB.NS",
+    "DIVISLAB": "DIVISLAB.NS",
+
+    # Cement & Infra
+    "ULTRATECH": "ULTRACEMCO.NS",
+    "ULTRACEMCO": "ULTRACEMCO.NS",
+    "ADANI": "ADANIENT.NS",
+    "ADANIENT": "ADANIENT.NS",
+    "ADANIPORTS": "ADANIPORTS.NS",
+    "LT": "LT.NS",
+    "LARSEN": "LT.NS",
+
+    # Telecom
+    "BHARTI": "BHARTIARTL.NS",
+    "AIRTEL": "BHARTIARTL.NS",
+    "BHARTIARTL": "BHARTIARTL.NS",
+
+    # Others
+    "ASIANPAINTS": "ASIANPAINT.NS",
+    "ASIANPAINT": "ASIANPAINT.NS",
+    "TITAN": "TITAN.NS",
+    "GRASIM": "GRASIM.NS",
+    "UPL": "UPL.NS",
+    "COAL": "COALINDIA.NS",
+    "COALINDIA": "COALINDIA.NS"
+}

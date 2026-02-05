@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
 from predictor import predict_price
 from stock_info import get_stock_details
+import re
+from nlp_parser import parse_message
+from stock_info import get_historical_price_series
 
 app = Flask(__name__)
 
@@ -32,28 +35,49 @@ def stock_info():
     return jsonify(get_stock_details(symbol))
 
 
-# 💬 CHATBOT-LIKE API
 @app.route("/chat", methods=["POST"])
 def chat():
-    text = request.json.get("message", "").lower()
+    text = request.json.get("message", "")
 
-    if "tomorrow" in text:
-        horizon = "1d"
-    elif "month" in text:
-        horizon = "1m"
-    elif "year" in text:
-        horizon = "1y"
-    else:
-        horizon = "1d"
+    parsed = parse_message(text)
 
-    words = text.split()
-    symbol = next((w.upper() for w in words if w.endswith(".NS")), None)
+    if not parsed:
+        return {"error": "Could not understand stock or request"}, 400
+
+    # 📊 CHART REQUEST
+    if parsed["intent"] == "chart":
+        return jsonify(
+            get_historical_price_series(
+                parsed["symbol"],
+                parsed["range_or_horizon"]
+            )
+        )
+
+    # 🔮 PRICE PREDICTION
+    return jsonify(
+        predict_price(
+            parsed["symbol"],
+            parsed["range_or_horizon"]
+        )
+    )
+
+# 📊 HISTORICAL PRICE CHART API
+@app.route("/chart", methods=["GET"])
+def chart():
+    symbol = request.args.get("symbol")
+    range = request.args.get("range", "1m")
 
     if not symbol:
-        return {"error": "Stock symbol not found in message"}, 400
+        return {"error": "symbol is required"}, 400
 
-    return jsonify(predict_price(symbol, horizon))
+    data = get_historical_price_series(symbol, range)
+
+    if not data:
+        return {"error": "No data found"}, 404
+
+    return jsonify(data)
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+

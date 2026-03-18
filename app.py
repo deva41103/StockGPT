@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from predictor import predict_price
 from stock_info import get_stock_details
 import re
@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return {"message": "StockGPT API is running 🚀"}
+    return render_template("index.html")
 
 
 # 🔮 PRICE PREDICTION API

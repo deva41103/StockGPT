@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockGPT - AI Market Analyst</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-chart-line"></i>
+                <h1>StockGPT</h1>
+            </div>
+            
+            <button class="new-chat-btn">
+                <i class="fa-solid fa-plus"></i> New Chat
+            </button>
+
+            <div class="suggested-queries">
+                <p class="section-title">SUGGESTED</p>
+                <div class="query-item" onclick="document.getElementById('chat-input').value=this.innerText; sendMessage();">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                    <span>Predict Reliance for tomorrow</span>
+                </div>
+                <div class="query-item" onclick="document.getElementById('chat-input').value=this.innerText; sendMessage();">
+                    <i class="fa-solid fa-chart-area"></i>
+                    <span>Show 1 month chart for TCS</span>
+                </div>
+                <div class="query-item" onclick="document.getElementById('chat-input').value=this.innerText; sendMessage();">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>HDFC Bank prediction Next Week</span>
+                </div>
+                <div class="query-item" onclick="document.getElementById('chat-input').value=this.innerText; sendMessage();">
+                    <i class="fa-solid fa-history"></i>
+                    <span>Infosys history 6 months</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <i class="fa-brands fa-python"></i> Powered by AI & Flask
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-area">
+            <header class="chat-header">
+                <h2>NIFTY 50 AI Assistant</h2>
+                <div class="status">
+                    <span class="pulse"></span> Online
+                </div>
+            </header>
+
+            <div class="chat-container" id="chat-container">
+                <!-- Welcome Message -->
+                <div class="message bot-message intro-msg">
+                    <div class="avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div class="bubble">
+                        Hello! I am StockGPT. I can analyze NIFTY 50 stocks, predict near-term price movements using LSTM models, and pull historical charts. 
+                        Try asking: <strong>"Predict Tata Motors for 1 month"</strong> or <strong>"Show chart for ITC 1 year"</strong>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-container">
+                <div class="input-box">
+                    <input type="text" id="chat-input" placeholder="Ask about NIFTY 50 stocks (e.g. Predict SBI tomorrow)..." onkeypress="handleKeyPress(event)">
+                    <button id="send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+                <div class="footer-note">
+                    AI predictions are speculative and not financial advice.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

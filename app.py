@@ -44,22 +44,26 @@ def chat():
     if not parsed:
         return {"error": "Could not understand stock or request"}, 400
 
+    stock_info = get_stock_details(parsed["symbol"])
+
     # 📊 CHART REQUEST
     if parsed["intent"] == "chart":
-        return jsonify(
-            get_historical_price_series(
-                parsed["symbol"],
-                parsed["range_or_horizon"]
-            )
-        )
-
-    # 🔮 PRICE PREDICTION
-    return jsonify(
-        predict_price(
+        data = get_historical_price_series(
             parsed["symbol"],
             parsed["range_or_horizon"]
         )
+        if data:
+            data["stock_info"] = stock_info
+        return jsonify(data)
+
+    # 🔮 PRICE PREDICTION
+    data = predict_price(
+        parsed["symbol"],
+        parsed["range_or_horizon"]
     )
+    if data:
+        data["stock_info"] = stock_info
+    return jsonify(data)
 
 # 📊 HISTORICAL PRICE CHART API
 @app.route("/chart", methods=["GET"])

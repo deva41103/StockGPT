@@ -37,23 +37,27 @@ The system follows a modular monolithic architecture centered around a Flask app
 
 ```text
 /StockGPT
-  ├── app.py                  # The main Flask application and API route definitions.
+  ├── app.py                  # The main Flask application and API route definitions, also serves the UI.
   ├── predictor.py            # Core ML prediction logic (Loads models, standardizes data, runs inference).
   ├── stock_info.py           # Uses yfinance to fetch live details and historical charts.
   ├── nlp_parser.py           # Extracts user intent, time horizons, and stock symbols from text.
   ├── stocks.py               # Dictionary mapping common stock names to Yahoo Finance NIFTY 50 tickers (.NS).
+  ├── static/                 # Contains CSS and JS files for the frontend web interface.
+  ├── templates/              # Contains the HTML template (index.html) for the web interface.
   ├── models/                 # Stores pre-trained TensorFlow models (lstm_sentiment.h5) & scalers (scaler.pkl).
+  ├── requirements.txt        # PIP dependencies list.
   ├── StockGpt.ipynb          # Jupyter Notebooks for data exploration and LSTM model training.
   ├── StockGptMl.ipynb        # Additional ML experimentations and training pipelines.
   └── developers.md           # This document!
 ```
 
 ### Detailed File Breakdown
-- **`app.py`**: The entry point. Initializes the Flask server and wires up REST APIs (`/predict`, `/stock-info`, `/chat`, `/chart`).
+- **`app.py`**: The entry point. Initializes the Flask server, wires up REST APIs (`/predict`, `/stock-info`, `/chat`, `/chart`), and serves the main web interface (`/`).
 - **`predictor.py`**: The heavy lifter. Contains `predict_price()`. It loads the specific LSTM model for a stock, calculates indicators using the `ta` library, runs standard scaling on the features `[Close, Volume, RSI, MACD, MACD_signal, Sentiment]`, makes sequential predictions using a sliding window approach of sizes up to `LOOKBACK = 60`, and un-scales the results to return expected closing prices.
 - **`stock_info.py`**: Exposes utility functions (`get_stock_details` and `get_historical_price_series`) strictly for fetching market metadata.
 - **`nlp_parser.py`**: A rule-engine NLP mechanism. Scans words for synonyms of "chart" or "predict", looks for temporal words ("week", "tomorrow"), and matches strings to valid keys via the `stocks` mapping.
 - **`stocks.py`**: A hardcoded lookup table mapping NIFTY 50 entities (e.g., "INFY", "TCS", "HDFC") to their corresponding NSE suffix tags expected by Yahoo Finance (`INFY.NS`, `TCS.NS`, `HDFCBANK.NS`).
+- **`static/` & `templates/`**: These directories contain the frontend assets (HTML, CSS, JS) that compose the StockGPT web interface, allowing users to interact with NLP endpoints via a chat-like format.
 - **`models/`**: The artifact repository containing subfolders for each ticker symbol containing the `.h5` model weights and `.pkl` object for the Scikit-learn normalizers.
 
 ---
@@ -61,8 +65,8 @@ The system follows a modular monolithic architecture centered around a Flask app
 ## 🔌 API Endpoints
 
 - **`GET /`**
-  - **Description**: Health check.
-  - **Returns**: `{"message": "StockGPT API is running 🚀"}`
+  - **Description**: Serves the main web interface (`index.html`).
+  - **Returns**: HTML content for the frontend.
 
 - **`GET /predict`**
   - **Params**: `symbol` (e.g., INFY.NS), `horizon` (1d, 1m, 1y).
@@ -89,7 +93,7 @@ The system follows a modular monolithic architecture centered around a Flask app
    ```bash
    python -m venv env
    source env/bin/activate  # Or `env\Scripts\activate` on Windows
-   pip install flask yfinance ta tensorflow scikit-learn numpy pandas joblib
+   pip install -r requirements.txt
    ```
 2. **Running the Server**:
    ```bash

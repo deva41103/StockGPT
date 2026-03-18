@@ -28,7 +28,7 @@ async function sendMessage() {
         });
 
         const data = await res.json();
-        
+
         // Remove loading
         document.getElementById(loadingId).remove();
 
@@ -85,6 +85,11 @@ function appendLoading() {
 }
 
 function handleBotResponse(data) {
+    // Render Complete Stock Info first if available
+    if (data.stock_info) {
+        renderStockInfo(data.stock_info);
+    }
+
     // Determine if it's a prediction or a chart
     if (data.expected_price !== undefined) {
         // It's a Prediction
@@ -97,9 +102,45 @@ function handleBotResponse(data) {
     }
 }
 
+function renderStockInfo(info) {
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message', 'bot-message');
+
+    // Make numbers safe
+    const mCap = info.market_cap ? '₹' + (info.market_cap / 1000000000).toFixed(2) + 'B' : 'N/A';
+    const high = info['52_week_high'] ? '₹' + info['52_week_high'] : '-';
+    const low = info['52_week_low'] ? '₹' + info['52_week_low'] : '-';
+
+    msgDiv.innerHTML = `
+        <div class="avatar"><i class="fa-solid fa-robot"></i></div>
+        <div class="bubble" style="width: 100%;">
+            <p><strong>Company Profile:</strong> ${info.name || info.symbol}</p>
+            <div class="prediction-card">
+                <div class="pred-header">
+                    <span>${info.sector || 'N/A'}</span>
+                    <span style="color: var(--text-primary);">Current: ₹${info.current_price || 'N/A'}</span>
+                </div>
+                <div class="pred-body">
+                    <div class="pred-metric">
+                        <span class="label">Market Cap</span>
+                        <span class="value">${mCap}</span>
+                    </div>
+                    <div class="pred-metric" style="align-items: flex-end;">
+                        <span class="label">52W High/Low</span>
+                        <span class="value" style="font-size: 0.9em;">${high} / ${low}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    chatContainer.appendChild(msgDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
 function renderPrediction(data) {
     const { symbol, horizon, last_close, expected_price, direction } = data;
-    
+
     // Formatting text summary
     const diff = expected_price - last_close;
     const perc = ((diff / last_close) * 100).toFixed(2);
@@ -138,7 +179,7 @@ function renderPrediction(data) {
 
 function renderChart(data) {
     const { symbol, range, series } = data;
-    
+
     chartIdCounter++;
     const canvasId = `chart-${chartIdCounter}`;
 
